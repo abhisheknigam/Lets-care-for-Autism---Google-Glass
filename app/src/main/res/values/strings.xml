@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">Glass Test Project</string>
+    <string name="title_activity_hello_world">Hello World Immersion</string>
+    <string name="hello_world">I am a genius!</string>
+</resources>

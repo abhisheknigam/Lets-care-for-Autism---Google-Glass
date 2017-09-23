@@ -25,9 +25,15 @@ import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.util.EntityUtils;
 
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.net.URI;
 import java.net.URL;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * An {@link Activity} showing a tuggable "Hello World!" card.
@@ -118,7 +124,7 @@ public class HelloWorld extends Activity {
 
     private void processPictureWhenReady(final String picturePath) {
         final File pictureFile = new File(picturePath);
-
+        getNetworkData(picturePath);
         if (pictureFile.exists()) {
             // The picture is ready; process it.
         } else {
@@ -181,7 +187,8 @@ public class HelloWorld extends Activity {
             System.out.print("URL" + url.toString());
 
             // Request headers. Replace the example key below with your valid subscription key.
-            request.setHeader("Content-Type", "application/json");
+            //request.setHeader("Content-Type", "application/json");
+            request.setHeader("Content-Type", "octet-stream");
             request.setHeader("Ocp-Apim-Subscription-Key", "e3a820e879724d4e832eb37cc8eefdcb");
 
             // Request body. Replace the example URL below with the URL of the image you want to analyze.
@@ -201,6 +208,150 @@ public class HelloWorld extends Activity {
         {
             System.out.println(e.getMessage());
         }
+    }
+
+    private String getFileURL(String path){
+        try {
+            URL url = new URL("https://upload.uploadcare.com/base/");
+            URI uri = url.toURI();
+            Map<String,String> otherparams = new HashMap<String, String>();
+            otherparams.put("UPLOADCARE_PUB_KEY","fda62941114df266eab8");
+            otherparams.put("UPLOADCARE_STORE","1");
+            //String res = multipartRequest(url, otherparams, path, "file", getMimeType(path));
+            return null;
+        }catch(Exception e){
+            System.out.println(e.getMessage());
+        }
+        return "";
+    }
+
+//    public String getMimeType(String path) {
+//        String mimeType = null;
+//        if (uri.getScheme().equals(ContentResolver.SCHEME_CONTENT)) {
+//            ContentResolver cr = getAppContext().getContentResolver();
+//            mimeType = cr.getType(uri);
+//        } else {
+//            String fileExtension = MimeTypeMap.getFileExtensionFromUrl(uri
+//                    .toString());
+//            mimeType = MimeTypeMap.getSingleton().getMimeTypeFromExtension(
+//                    fileExtension.toLowerCase());
+//        }
+//        return mimeType;
+//    }
+
+//    public String multipartRequest(String urlTo, Map<String, String> parmas, String filepath, String filefield, String fileMimeType) throws CustomException {
+//        HttpURLConnection connection = null;
+//        DataOutputStream outputStream = null;
+//        InputStream inputStream = null;
+//
+//        String twoHyphens = "--";
+//        String boundary = "*****" + Long.toString(System.currentTimeMillis()) + "*****";
+//        String lineEnd = "\r\n";
+//
+//        String result = "";
+//
+//        int bytesRead, bytesAvailable, bufferSize;
+//        byte[] buffer;
+//        int maxBufferSize = 1 * 1024 * 1024;
+//
+//        String[] q = filepath.split("/");
+//        int idx = q.length - 1;
+//
+//        try {
+//            File file = new File(filepath);
+//            FileInputStream fileInputStream = new FileInputStream(file);
+//
+//            URL url = new URL(urlTo);
+//            connection = (HttpURLConnection) url.openConnection();
+//
+//            connection.setDoInput(true);
+//            connection.setDoOutput(true);
+//            connection.setUseCaches(false);
+//
+//            connection.setRequestMethod("POST");
+//            connection.setRequestProperty("Connection", "Keep-Alive");
+//            connection.setRequestProperty("User-Agent", "Android Multipart HTTP Client 1.0");
+//            connection.setRequestProperty("Content-Type", "multipart/form-data; boundary=" + boundary);
+//
+//            outputStream = new DataOutputStream(connection.getOutputStream());
+//            outputStream.writeBytes(twoHyphens + boundary + lineEnd);
+//            outputStream.writeBytes("Content-Disposition: form-data; name=\"" + filefield + "\"; filename=\"" + q[idx] + "\"" + lineEnd);
+//            outputStream.writeBytes("Content-Type: " + fileMimeType + lineEnd);
+//            outputStream.writeBytes("Content-Transfer-Encoding: binary" + lineEnd);
+//
+//            outputStream.writeBytes(lineEnd);
+//
+//            bytesAvailable = fileInputStream.available();
+//            bufferSize = Math.min(bytesAvailable, maxBufferSize);
+//            buffer = new byte[bufferSize];
+//
+//            bytesRead = fileInputStream.read(buffer, 0, bufferSize);
+//            while (bytesRead > 0) {
+//                outputStream.write(buffer, 0, bufferSize);
+//                bytesAvailable = fileInputStream.available();
+//                bufferSize = Math.min(bytesAvailable, maxBufferSize);
+//                bytesRead = fileInputStream.read(buffer, 0, bufferSize);
+//            }
+//
+//            outputStream.writeBytes(lineEnd);
+//
+//            // Upload POST Data
+//            Iterator<String> keys = parmas.keySet().iterator();
+//            while (keys.hasNext()) {
+//                String key = keys.next();
+//                String value = parmas.get(key);
+//
+//                outputStream.writeBytes(twoHyphens + boundary + lineEnd);
+//                outputStream.writeBytes("Content-Disposition: form-data; name=\"" + key + "\"" + lineEnd);
+//                outputStream.writeBytes("Content-Type: text/plain" + lineEnd);
+//                outputStream.writeBytes(lineEnd);
+//                outputStream.writeBytes(value);
+//                outputStream.writeBytes(lineEnd);
+//            }
+//
+//            outputStream.writeBytes(twoHyphens + boundary + twoHyphens + lineEnd);
+//
+//
+//            if (200 != connection.getResponseCode()) {
+//                throw new CustomException("Failed to upload code:" + connection.getResponseCode() + " " + connection.getResponseMessage());
+//            }
+//
+//            inputStream = connection.getInputStream();
+//
+//            result = this.convertStreamToString(inputStream);
+//
+//            fileInputStream.close();
+//            inputStream.close();
+//            outputStream.flush();
+//            outputStream.close();
+//
+//            return result;
+//        } catch (Exception e) {
+//            logger.error(e);
+//            throw new CustomException(e);
+//        }
+//
+//    }
+
+    private String convertStreamToString(InputStream is) {
+        BufferedReader reader = new BufferedReader(new InputStreamReader(is));
+        StringBuilder sb = new StringBuilder();
+
+        String line = null;
+        try {
+            while ((line = reader.readLine()) != null) {
+                sb.append(line);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                is.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        return sb.toString();
     }
 
     @Override

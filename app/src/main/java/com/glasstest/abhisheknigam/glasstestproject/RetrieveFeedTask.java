@@ -53,7 +53,7 @@ class RetrieveFeedTask extends AsyncTask<String, String, String> {
                 // Request headers. Replace the example key below with your valid subscription key.
                 //request.setHeader("Content-Type", "application/json");
                 request.setHeader("Content-Type", "application/octet-stream");
-                request.setHeader("ocp-apim-subscription-key", "4a84beb4d5074a169e954466ccf3fc38");
+                request.setHeader("ocp-apim-subscription-key", "76ca80d68c954f8d99298be0d17aab5b");
 
                 // Request body. Replace the example URL below with the URL of the image you want to analyze.
                 //StringEntity reqEntity = new StringEntity("{ \"url\":" + path +"}");

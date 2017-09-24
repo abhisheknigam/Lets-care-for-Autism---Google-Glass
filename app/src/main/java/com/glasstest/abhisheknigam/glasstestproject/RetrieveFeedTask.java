@@ -11,6 +11,8 @@ import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.ByteArrayEntity;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.util.EntityUtils;
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 import java.io.ByteArrayOutputStream;
 import java.io.FileInputStream;
@@ -65,14 +67,17 @@ class RetrieveFeedTask extends AsyncTask<String, String, String> {
                 HttpClient httpClient = new DefaultHttpClient();
                 HttpResponse response = httpClient.execute(request);
 
-                System.out.println("Response 2" + response.toString());
+                //System.out.println("Response 2" + response.toString());
 
                 HttpEntity entity = response.getEntity();
 
-                System.out.println("Entity" + entity);
+                //System.out.println("Entity" + entity);
+                String res = "";
                 if (entity != null) {
-                    System.out.println(EntityUtils.toString(entity));
+                    res = EntityUtils.toString(entity);
+                    //System.out.println(res);
                 }
+                return displayEmoji(res, resource[0]);
             } catch (Exception e) {
                 System.out.println(e);
                 e.printStackTrace();
@@ -84,5 +89,60 @@ class RetrieveFeedTask extends AsyncTask<String, String, String> {
             Scanner s = new Scanner(in);
             return s.useDelimiter("\\A").hasNext() ? s.next() : "";
         }
+
+
+        private String displayEmoji(String jsonres, String filepath){
+            try {
+                JSONArray jsa = new JSONArray(jsonres);
+                System.out.println(jsa);
+                if(jsa.length()>0) {
+                    JSONObject jso = jsa.getJSONObject(0).getJSONObject("scores");
+
+                    String output = "";
+                    Double max = 0d;
+                    if (max < jso.getDouble("anger")) {
+                        max = jso.getDouble("anger");
+                        output = "anger";
+                    }
+                    if (max < jso.getDouble("contempt")) {
+                        max = jso.getDouble("contempt");
+                        output = "contempt";
+                    }
+                    if (max < jso.getDouble("disgust")) {
+                        max = jso.getDouble("disgust");
+                        output = "disgust";
+                    }
+                    if (max < jso.getDouble("fear")) {
+                        max = jso.getDouble("fear");
+                        output = "fear";
+                    }
+                    if (max < jso.getDouble("happiness")) {
+                        max = jso.getDouble("happiness");
+                        output = "happiness";
+                    }
+                    if (max < jso.getDouble("neutral")) {
+                        max = jso.getDouble("neutral");
+                        output = "neutral";
+                    }
+                    if (max < jso.getDouble("sadness")) {
+                        max = jso.getDouble("sadness");
+                        output = "sadness";
+                    }
+                    if (max < jso.getDouble("surprise")) {
+                        max = jso.getDouble("surprise");
+                        output = "surprise";
+                    }
+                    return output;
+
+
+                }
+            }catch(Exception e){
+                System.out.println(e);
+                e.printStackTrace();
+            }
+            return  "";
+        }
+
+
     }
 

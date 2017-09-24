@@ -3,11 +3,13 @@ package com.glasstest.abhisheknigam.glasstestproject;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.FileObserver;
 import android.provider.MediaStore;
 import android.view.MotionEvent;
 import android.view.WindowManager;
+import android.widget.ImageView;
 
 import com.google.android.glass.content.Intents;
 import com.google.android.glass.touchpad.Gesture;
@@ -126,11 +128,9 @@ public class HelloWorld extends Activity {
     {
         if (requestCode == TAKE_PICTURE_REQUEST && resultCode == RESULT_OK) {
             String thumbnailPath = data.getStringExtra(Intents.EXTRA_THUMBNAIL_FILE_PATH);
-            String picturePath = data.getStringExtra(Intents.EXTRA_PICTURE_FILE_PATH);
+            //String picturePath = data.getStringExtra(Intents.EXTRA_PICTURE_FILE_PATH);
 
-            processPictureWhenReady(picturePath);
-
-            setContentView(cameraView);
+            processPictureWhenReady(thumbnailPath);
             // TODO: Show the thumbnail to the user while the full picture is being
             // processed.
         }
@@ -147,8 +147,43 @@ public class HelloWorld extends Activity {
 //                String[] paths = picturePath.split("/");
             //picturedir, picturePath.split("/")[paths.length-1]
             //System.out.print(picturePath + "      pd:" + picturedir.getAbsolutePath());
+            try {
+                String output = new RetrieveFeedTask().execute(picturePath).get();
+                if(output.isEmpty()){
+                    output="neutral";
+                }
+                //CardScrollView csv = new CardScrollView(this);
+                cameraView.destroyDrawingCache();
+                cameraView = null;
+                /*CardBuilder card = new CardBuilder(this, Card);
+                card.setText(output);*/
+                ImageView card = new ImageView(this);
 
-            new RetrieveFeedTask().execute(picturePath); //getNetworkData(picturePath);
+                card.setImageURI(Uri.parse("android.resource://com.glasstest.abhisheknigam.glasstestproject/drawable/"+output));
+                setContentView(card);
+                final Context c = this;
+                card.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        // Initiate CameraView
+                        cameraView = new CameraView(c);
+
+                        // Turn on Gestures
+                        mGestureDetector = createGestureDetector(c);
+
+                        setContentView(cameraView);
+                        //getNetworkData(picturePath);
+                    }
+                }, 2000);
+                card.destroyDrawingCache();
+                card = null;
+            }catch(Exception e){
+                System.out.println(e);
+                e.printStackTrace();
+            }
+
+
+
         } else {
             // The file does not exist yet. Before starting the file observer, you
             // can update your UI to let the user know that the application is

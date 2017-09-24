@@ -71,7 +71,6 @@ public class CameraView extends SurfaceView implements SurfaceHolder.Callback
     {
         // Do not hold the camera during surfaceDestroyed - view should be gone
         this.releaseCamera();
-
     }
 
     /**
@@ -97,7 +96,6 @@ public class CameraView extends SurfaceView implements SurfaceHolder.Callback
         {
             camera.release();
             camera = null;
-
         }
     }
 }

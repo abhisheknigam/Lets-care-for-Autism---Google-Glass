@@ -99,6 +99,7 @@ class RetrieveFeedTask extends AsyncTask<String, String, String> {
                     JSONObject jso = jsa.getJSONObject(0).getJSONObject("scores");
 
                     String output = "";
+
                     Double max = 0d;
                     if (max < jso.getDouble("anger")) {
                         max = jso.getDouble("anger");

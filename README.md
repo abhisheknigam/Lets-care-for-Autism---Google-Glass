@@ -2,7 +2,7 @@
 
 Today, Autism affects 1 in 100 people. Specifically, With children, autism now affects 1 in 68 children and 1 in 42 boys.  It is one of the fastest-growing developmental disorders in the U.S and costs a family $60,000 a year on average. With the current state of advancements in technology, It is time for us to show we care.
 
-See our Video :: https://www.youtube.com/watch?v=jgUUscm7604&feature=youtu.be
+See our Video :: https://www.youtube.com/watch?v=4FBjRri3Zbs
 
 ## Goal
 

@@ -11,10 +11,14 @@ See our Video :: https://www.youtube.com/watch?v=4FBjRri3Zbs
 ## Setup
 
 In RetrieveFeedTask.java at line 58 change the API key to reflect your own API key. 
+    
     request.setHeader("ocp-apim-subscription-key", "76ca80d68c954f8d99298be0d17aab5b");
+
 The API key corresponds to the Emotion API of Microsoft cognitive services. 
+    
     Link : https://azure.microsoft.com/en-us/services/cognitive-services/emotion/
-After this simply build and trnafer this app to Google Glass using your preffered IDE i.e Android Studio, Eclipse etc. (You might need to install Google Glass Kit available in Kitkat 4.4.2 from your Android Package Manager for this to compile).
+
+After this simply build and trnafer this app to Google Glass using your preffered IDE i.e Android Studio, Eclipse etc. **(You might need to install Google Glass Kit available in Kitkat 4.4.2 from your Android Package Manager for this to compile).**
 
 Note : Gradle build files are part of this repository. This should be generated for your machine/platform automatically by the compiler.
 

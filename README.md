@@ -51,4 +51,4 @@ We also learned about google glass and Augmented Reality. We explored the Micros
 
 ## What's next for Let'sCareForAutism-GoogleGlass
 
-We have all our code on Github. We would next solidify the core logic by testing this prototype with the help of our friend with suffers from Autism.
+We have all our code on Github. We would next solidify the core logic by testing this prototype with the help of our friend who has Autism.
